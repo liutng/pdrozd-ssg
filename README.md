@@ -4,7 +4,7 @@ pdrozd-ssg is a static site generator created in python
 
 # Requirements
 
-you need python 3
+python 3
 
 # Commands
 
