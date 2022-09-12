@@ -1,8 +1,6 @@
-from operator import index
 import os
 import shutil
 import codecs
-from venv import create
 
 def parseInput(arg):
     path = os.path.abspath(os.getcwd()) + "\\" + arg #Creates a path for the file or directory
