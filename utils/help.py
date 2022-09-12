@@ -1,2 +1,12 @@
+#This prints the Help message
+
 def printHelp():
-    print("pdrozd-ssg release version 1.0")
+    print('''------Help------
+The commands of pdrozd-ssg are
+* -h or --help this will display to the user the options they have
+
+* -v or --version this will display to the user the current verison of pdrozd-ssg
+
+* -i or --input this with a combanation of file or directory will output your files as a Static Site
+  to use put in the format py ssg.py -i or --input [file.txt] or [directory\] 
+  ''')
