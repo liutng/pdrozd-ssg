@@ -1,4 +1,4 @@
 #This will print the current Version
 
 def printVersion():
-    print("pdrozd-ssg release version 1.1")
+    raise SystemExit("pdrozd-ssg release version 1.1")

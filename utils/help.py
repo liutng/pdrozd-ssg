@@ -1,7 +1,7 @@
 #This prints the Help message
 
 def printHelp():
-    print('''------Help------
+    raise SystemExit('''------Help------
 The commands of pdrozd-ssg are
 * -h or --help this will display to the user the options they have
 

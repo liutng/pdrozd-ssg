@@ -5,11 +5,14 @@ from utils.input import parseInput
 from utils.version import *
 
 try:
+    for arg in sys.argv:
+        if arg == "-h" or arg == "--help":
+            printHelp()
+
     arg = sys.argv[1]  #Grabs the arguments from the command line
+
     if arg == "-v" or arg == "--version":
         printVersion()
-    elif arg == "-h" or arg == "--help":
-        printHelp()
     elif arg == "-i" or arg == "--input":
         try:
             input = sys.argv[2]
