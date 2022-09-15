@@ -2,6 +2,14 @@
 
 pdrozd-ssg is a static site generator created in python
 
+# Optional features
+
+* Added title parsing
+
+* Added recursive search
+
+* Added automatically generated index file
+
 # Requirements
 
 python 3
