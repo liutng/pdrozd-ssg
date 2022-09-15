@@ -38,17 +38,17 @@ def parseFile(arg):
 
         site = codecs.open(fullName, "w", encoding="utf-8")
         site.write('''<!doctype html>
-    <html lang="en">
-    <head>
-    <meta charset="utf-8">
-    <title>''' + fileName + '''</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-    <h1> ''' + fileName + ''' </h1>
-    <br>
-    <br>
-    ''')
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>''' + fileName + '''</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<h1> ''' + fileName + ''' </h1>
+<br>
+<br>
+''')
         for line in lines: #Loops through the list to fill out the html
             site.write('<p>' + line + '</p>\n')
 
@@ -77,23 +77,23 @@ def createIndex():
 
         index = codecs.open(fullName, "w", encoding="utf-8")
         index.write('''<!doctype html>
-    <html lang="en">
-    <head>
-    <meta charset="utf-8">
-    <title> Index </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-    <h1> Index </h1>
-    <br>
-    <br>
-    <ol>
-    ''')
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title> Index </title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<h1> Index </h1>
+<br>
+<br>
+<ol>
+''')
         for file in allFiles: #Loops through the list to fill out the html
             index.write('<li><a href="'+ file +'">' + file + '</a></li>\n')
 
         index.write('''</ol>
-    </body>
-    </html>''') #Finishes the document with a body
+</body>
+</html>''') #Finishes the document with a body
     else:
         raise SystemExit()
