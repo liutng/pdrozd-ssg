@@ -49,7 +49,7 @@ def parseFile(arg):
 <br>
 <br>
 ''')
-        for line in lines: #Loops through the list to fill out the html
+        for line in lines[1:]: #Loops through the list to fill out the html
             site.write('<p>' + line + '</p>\n')
 
         site.write('</body>\n</html>') #Finishes the document with a body
