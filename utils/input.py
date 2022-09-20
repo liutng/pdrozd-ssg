@@ -1,6 +1,10 @@
+from ast import parse
 import os
+from pickletools import string1
 import shutil
 import codecs
+import string
+from tokenize import String
 
 def parseInput(arg):
     global newDir #Creates a new Directory for the output
@@ -26,9 +30,7 @@ def parseInput(arg):
     createIndex()
 
 def parseFile(arg):
-    if os.path.splitext(arg)[1] != ".txt":
-        print(f"Unable to Proccses " + arg + " because its not a text file")
-    else:
+    if os.path.splitext(arg)[1] == ".txt":
         file = codecs.open(arg, "r", encoding="utf-8")
         lines = file.read().splitlines() #Creates a String list of lines 
 
@@ -53,7 +55,48 @@ def parseFile(arg):
             site.write('<p>' + line + '</p>\n')
 
         site.write('</body>\n</html>') #Finishes the document with a body
+    elif os.path.splitext(arg)[1] == ".md":
+        file = codecs.open(arg,"r", encoding="utf-8")
+        lines = file.read().splitlines()
+
+        fileName = lines[0];
+        fullName = os.path.join(newDir, fileName + ".html")
+        site = codecs.open(fullName, "w",encoding="utf-8")
+        site.write("""<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>""" + fileName +"""</title>  
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<h1> """ + fileName + """ </h1>
+<br>
+<br>
+""")
+        for line in lines[1:]: #Loops through the list to fill out the html
+            site.write(parseMarkdown(line))
+
+        site.write('</body>\n</html>') #Finishes the document with a body
+     
+
+
+    else:
+        print(f"Unable to Proccses " + arg + " because its not a text file")
+
     
+def parseMarkdown(md:str):
+    htmlStr = ""
+    if md.startswith("# "): #implements heading 1 conversion.
+        htmlStr = "<h1>" + md.replace("# ","") + "</h1>"
+    elif(len(md.strip()) != 0):
+        htmlStr = "<p>" + md + "</p>\n"
+    else:
+        htmlStr = "<br>\n"
+    return htmlStr
+
+        
+
 
 def parseDirectory(arg):
 
