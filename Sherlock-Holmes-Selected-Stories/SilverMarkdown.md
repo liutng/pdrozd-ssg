@@ -1,4 +1,4 @@
-Silver Blaze
+Silver Blaze MD
 
 
 # I am afraid, Watson, that I shall have to go,” said Holmes, as we sat down together to our breakfast one morning.

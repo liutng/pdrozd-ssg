@@ -63,17 +63,17 @@ def parseFile(arg):
         fullName = os.path.join(newDir, fileName + ".html")
         site = codecs.open(fullName, "w",encoding="utf-8")
         site.write("""<!doctype html>
-                  <html lang="en">
-                  <head>
-                  <meta charset="utf-8">
-                  <title>""" + fileName +"""</title>  
-                  <meta name="viewport" content="width=device-width, initial-scale=1">
-                  </head>
-                  <body>
-                  <h1> """ + fileName + """ </h1>
-                  <br>
-                  <br>
-        """)
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>""" + fileName +"""</title>  
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<h1> """ + fileName + """ </h1>
+<br>
+<br>
+""")
         for line in lines[1:]: #Loops through the list to fill out the html
             site.write(parseMarkdown(line))
 
