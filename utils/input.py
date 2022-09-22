@@ -1,6 +1,10 @@
+from ast import parse
 import os
+from pickletools import string1
 import shutil
 import codecs
+import string
+from tokenize import String
 
 def parseInput(arg):
     global newDir #Creates a new Directory for the output
