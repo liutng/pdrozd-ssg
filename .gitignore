@@ -1,7 +1,3 @@
 .vscode/launch.json
 test.txt
-*.pyc
-utils/__pycache__/help.cpython-310.pyc
-utils/__pycache__/input.cpython-310.pyc
-utils/__pycache__/version.cpython-310.pyc
-utils/__pycache__/version.cpython-310.pyc
+.utils\__pycache__
