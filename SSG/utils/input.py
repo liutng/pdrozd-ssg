@@ -101,6 +101,33 @@ def parseMarkdown(md:str):
         htmlStr = "<h1>" + md.replace("# ","") + "</h1>"
     elif(len(md.strip()) != 0):
         htmlStr = md
+
+    # searching for position of *
+    index = md.find('*')
+    lastIndex = 0
+    if index != -1:
+        for char_index in range(index, len(md)):
+            if md[char_index] == '*':
+                lastIndex = char_index
+    # Adding Italics in markdown
+    if index != -1 and lastIndex != 0:
+        md = md[:lastIndex] + "</i>" + md[lastIndex+1:] # Have to do the last position first or else it messes with the first index
+        md = md[:index] + "<i>" + md[index+1:]
+        htmlStr = md
+
+    # searching for position of *
+    index = md.find('`')
+    lastIndex = 0
+    if index != -1:
+        for char_index in range(index, len(md)):
+            if md[char_index] == '`':
+                lastIndex = char_index
+    # Adding Italics in markdown
+    if index != -1 and lastIndex != 0:
+        md = md[:lastIndex] + "</code>" + md[lastIndex+1:] # Have to do the last position first or else it messes with the first index
+        md = md[:index] + "<code>" + md[index+1:]
+        htmlStr = md
+
     return htmlStr
 
         
