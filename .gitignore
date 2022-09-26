@@ -1,3 +1,4 @@
 .vscode/launch.json
 test.txt
 .SSG/utils/__pycache__
+.gitignore
