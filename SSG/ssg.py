@@ -16,7 +16,11 @@ try:
     elif arg == "-i" or arg == "--input":
         try:
             input = sys.argv[2]
-            parseInput(input)
+            try:
+                if sys.argv[3] == "-l" or arg == "--lang":
+                    parseInput(input, sys.argv[4])
+            except Exception:
+                parseInput(input)
         except IndexError:
             raise SystemExit(f"No input was added") #Exits Program if called input without file or directory   
     else:
