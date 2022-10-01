@@ -1,4 +1,7 @@
 from ast import parse
+from distutils import file_util
+import json
+from os.path import exists
 import os
 from pickletools import string1
 import shutil
@@ -28,6 +31,28 @@ def parseInput(arg):
         else:
             raise SystemExit(f"File or directory dosen't exsit (make sure file extension is included)")
     createIndex()
+
+def readConfigFile(arg = ""):
+    if len(arg) != 0:
+        if(exists(arg)):
+            if os.path.isfile(arg):
+                jsonFile = open(arg)
+                if(jsonFile.readable()):
+                    jsonMap =  json.load(jsonFile)
+                    if jsonMap.empty():
+                        raise SystemExit(f"Config file doesn't contain necessary input and output arguments.")
+            ## TODO Add config file parsing code
+
+                else:
+                    raise SystemExit(f"Can't read file {arg}, please make sure you have the read permission to the file.")
+            
+            else:
+                raise SystemExit(f"{arg} is a directory, please provide a config file.")
+             
+        else:
+            raise SystemExit(f"Can't find a valid config file in {arg}")
+    else:
+        raise SystemExit("Config file is not provided, please make sure to pass a valid config file.")
 
 def parseFile(arg):
     if os.path.splitext(arg)[1] == ".txt":
