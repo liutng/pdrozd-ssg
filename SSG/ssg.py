@@ -54,7 +54,7 @@ try:
     elif len(inputConfigFile):
         readConfigFile(inputConfigFile)
     elif len(inputPath):
-        parseInput(inputPath);
+        parseInput(inputPath,inputLang);
     else:
         raise SystemExit(f"No arguments were passed if unsure about which aurgument are avialable use -h or --help")
 except SystemExit as err:

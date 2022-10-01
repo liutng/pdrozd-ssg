@@ -9,9 +9,11 @@ import codecs
 import string
 from tokenize import String
 
-def parseInput(arg):
+def parseInput(arg,lang="en-CA"):
     global newDir #Creates a new Directory for the output
+    global newlang
     newDir = os.path.join(os.path.abspath(os.getcwd()), "dist")
+    newlang = lang
 
     if os.path.exists(newDir): #Checks if dist is already a directory if it is it is removed 
             shutil.rmtree(newDir)
@@ -65,7 +67,7 @@ def parseFile(arg):
 
         site = codecs.open(fullName, "w", encoding="utf-8")
         site.write('''<!doctype html>
-<html lang="en">
+<html lang=''' + newlang + '''>
 <head>
 <meta charset="utf-8">
 <title>''' + fileName + '''</title>
@@ -75,34 +77,42 @@ def parseFile(arg):
 <h1> ''' + fileName + ''' </h1>
 <br>
 <br>
+<p>
 ''')
         for line in lines[1:]: #Loops through the list to fill out the html
-            site.write('<p>' + line + '</p>\n')
+                if line != "":
+                    site.write(line)
+                else:
+                    site.write('</p>\n<p>')
 
-        site.write('</body>\n</html>') #Finishes the document with a body
+        site.write('</p>\n</body>\n</html>') #Finishes the document with a body
     elif os.path.splitext(arg)[1] == ".md":
         file = codecs.open(arg,"r", encoding="utf-8")
         lines = file.read().splitlines()
 
-        fileName = lines[0];
+        fileName = lines[0]
         fullName = os.path.join(newDir, fileName + ".html")
         site = codecs.open(fullName, "w",encoding="utf-8")
-        site.write("""<!doctype html>
-<html lang="en">
+        site.write('''<!doctype html>
+<html lang=''' + newlang + '''>
 <head>
 <meta charset="utf-8">
-<title>""" + fileName +"""</title>  
+<title>''' + fileName +'''</title>  
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<h1> """ + fileName + """ </h1>
+<h1> ''' + fileName + ''' </h1>
 <br>
 <br>
-""")
+<p>
+''')
         for line in lines[1:]: #Loops through the list to fill out the html
-            site.write(parseMarkdown(line))
+            if line != "":
+                    site.write(parseMarkdown(line))
+            else:
+                    site.write('</p>\n<p>')
 
-        site.write('</body>\n</html>') #Finishes the document with a body
+        site.write('</p>\n</body>\n</html>') #Finishes the document with a body
      
 
 
@@ -115,9 +125,34 @@ def parseMarkdown(md:str):
     if md.startswith("# "): #implements heading 1 conversion.
         htmlStr = "<h1>" + md.replace("# ","") + "</h1>"
     elif(len(md.strip()) != 0):
-        htmlStr = "<p>" + md + "</p>\n"
-    else:
-        htmlStr = "<br>\n"
+        htmlStr = md
+
+    # searching for position of *
+    index = md.find('*')
+    lastIndex = 0
+    if index != -1:
+        for char_index in range(index, len(md)):
+            if md[char_index] == '*':
+                lastIndex = char_index
+    # Adding Italics in markdown
+    if index != -1 and lastIndex != 0:
+        md = md[:lastIndex] + "</i>" + md[lastIndex+1:] # Have to do the last position first or else it messes with the first index
+        md = md[:index] + "<i>" + md[index+1:]
+        htmlStr = md
+
+    # searching for position of *
+    index = md.find('`')
+    lastIndex = 0
+    if index != -1:
+        for char_index in range(index, len(md)):
+            if md[char_index] == '`':
+                lastIndex = char_index
+    # Adding Italics in markdown
+    if index != -1 and lastIndex != 0:
+        md = md[:lastIndex] + "</code>" + md[lastIndex+1:] # Have to do the last position first or else it messes with the first index
+        md = md[:index] + "<code>" + md[index+1:]
+        htmlStr = md
+
     return htmlStr
 
         
@@ -145,7 +180,7 @@ def createIndex():
 
         index = codecs.open(fullName, "w", encoding="utf-8")
         index.write('''<!doctype html>
-<html lang="en">
+<html lang='''+ newlang +'''>
 <head>
 <meta charset="utf-8">
 <title> Index </title>

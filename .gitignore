@@ -1,2 +1,5 @@
 .vscode/launch.json
 test.txt
+.SSG/utils/__pycache__
+.SSG/Sherlock-Holmes-Selected-Stories
+.SSG/dist
