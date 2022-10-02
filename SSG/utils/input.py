@@ -44,10 +44,9 @@ def readConfigFile(arg = ""):
                     jsonMap =  json.load(jsonFile)
                     if len(jsonMap) == 0:
                         raise SystemExit(f"Config file doesn't contain necessary input and output arguments.")
-            ## TODO Add config file parsing code
                     else:
-                        input = jsonMap["input"] if jsonMap.__contains__("input") else "";
-                        lang = jsonMap["lang"] if jsonMap.__contains__("lang") else "";
+                        input = jsonMap["input"] if jsonMap.__contains__("input") else "";  # Check if argument "input" is included in the config file
+                        lang = jsonMap["lang"] if jsonMap.__contains__("lang") else ""; # Check if argument "lang" is included in the config file.
                         if len(input) != 0:
                             parseInput(input,lang)
                         else:
