@@ -31,11 +31,10 @@ The commands of pdrozd-ssg are
 * -v or --version this will display to the user the current verison of pdrozd-ssg
 
 * -i or --input this with a combanation of .txt or .md file or directory will output your files as a Static Site
-  to use put in the format 
- 
- ```py ssg.py -i or --input [file.txt\text.ms] or [directory\]``` 
+  to use put in the format. e.g. <br>
+   ```py ssg.py -i or --input [file.txt\text.ms] or [directory\]``` 
 
-* -l or --lang this at the end of the input command will allow the default language of the HTML files to change
+* -l or --lang this at the end of the input command will allow the default language of the HTML files to change. e.g.<br>
    ```py ssg.py -i or --input [file.txt\text.md] or [directory\] -l or --lang [language]```
 
 # Config File
