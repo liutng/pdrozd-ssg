@@ -41,9 +41,16 @@ def readConfigFile(arg = ""):
                 jsonFile = open(arg)
                 if(jsonFile.readable()):
                     jsonMap =  json.load(jsonFile)
-                    if jsonMap.empty():
+                    if len(jsonMap) == 0:
                         raise SystemExit(f"Config file doesn't contain necessary input and output arguments.")
             ## TODO Add config file parsing code
+                    else:
+                        input = jsonMap["input"]
+                        lang = jsonMap["lang"]
+                        if len(input) != 0:
+                            parseInput(input,lang)
+                        else:
+                            SystemExit(f"Input file is not included in the config file.")
 
                 else:
                     raise SystemExit(f"Can't read file {arg}, please make sure you have the read permission to the file.")
