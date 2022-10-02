@@ -32,7 +32,7 @@ def parseInput(arg,lang="en-CA"):
         elif os.path.isdir(path):
             parseDirectory(path)
         else:
-            raise SystemExit(f"File or directory dosen't exsit (make sure file extension is included)")
+            raise SystemExit(f"Input file or directory dosen't exsit (make sure file extension is included)")
     createIndex()
 
 def readConfigFile(arg = ""):
@@ -177,7 +177,7 @@ def parseDirectory(arg):
         elif os.path.isdir(tmp):
             parseDirectory(tmp)
         else:
-            raise SystemExit(f"File or directory dosen't exsit (make sure file extension is included)") 
+            raise SystemExit(f"Input file or directory dosen't exsit (make sure file extension is included)") 
 
 
 def createIndex():
