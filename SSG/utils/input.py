@@ -1,4 +1,5 @@
 from ast import parse
+from asyncio.windows_events import NULL
 from distutils import file_util
 import json
 from os.path import exists
@@ -13,7 +14,7 @@ def parseInput(arg,lang="en-CA"):
     global newDir #Creates a new Directory for the output
     global newlang
     newDir = os.path.join(os.path.abspath(os.getcwd()), "dist")
-    newlang = lang
+    newlang = lang if len(lang) != 0 else "en-CA"
 
     if os.path.exists(newDir): #Checks if dist is already a directory if it is it is removed 
             shutil.rmtree(newDir)
@@ -45,12 +46,12 @@ def readConfigFile(arg = ""):
                         raise SystemExit(f"Config file doesn't contain necessary input and output arguments.")
             ## TODO Add config file parsing code
                     else:
-                        input = jsonMap["input"]
-                        lang = jsonMap["lang"]
+                        input = jsonMap["input"] if jsonMap.__contains__("input") else "";
+                        lang = jsonMap["lang"] if jsonMap.__contains__("lang") else "";
                         if len(input) != 0:
                             parseInput(input,lang)
                         else:
-                            SystemExit(f"Input file is not included in the config file.")
+                          raise SystemExit(f"Input file is not included in the config file.")
 
                 else:
                     raise SystemExit(f"Can't read file {arg}, please make sure you have the read permission to the file.")

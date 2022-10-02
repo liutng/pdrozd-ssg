@@ -9,4 +9,6 @@ The commands of pdrozd-ssg are
 
 * -i or --input this with a combanation of file or directory will output your files as a Static Site
   to use put in the format py ssg.py -i or --input [file.txt] or [directory\] 
+  
+* -c or --config this will specify a config file which contains arguments for SSG to read.
   ''')
