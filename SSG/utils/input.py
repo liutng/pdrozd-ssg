@@ -8,6 +8,7 @@ from pickletools import string1
 import shutil
 import codecs
 import string
+from tkinter.tix import Tree
 from tokenize import String
 
 def parseInput(arg,lang="en-CA"):
@@ -64,16 +65,14 @@ def readConfigFile(arg = ""):
         raise SystemExit("Config file is not provided, please make sure to pass a valid config file.")
 
 def parseFile(arg):
-    if os.path.splitext(arg)[1] == ".txt":
-        file = codecs.open(arg, "r", encoding="utf-8")
-        lines = file.read().splitlines() #Creates a String list of lines 
 
-        fileName = lines[0] #Creates a name for the file with the first line
-        
-        fullName = os.path.join(newDir, fileName + ".html") #Creates a path for the new file so it is created in dist
+    file = codecs.open(arg,"r", encoding="utf-8")
+    lines = file.read().splitlines()
 
-        site = codecs.open(fullName, "w", encoding="utf-8")
-        site.write('''<!doctype html>
+    fileName = lines[0]
+    fullName = os.path.join(newDir, fileName + ".html")
+
+    header = '''<!doctype html>
 <html lang=''' + newlang + '''>
 <head>
 <meta charset="utf-8">
@@ -85,41 +84,29 @@ def parseFile(arg):
 <br>
 <br>
 <p>
-''')
+'''
+    footer = '</p>\n</body>\n</html>'
+
+    if os.path.splitext(arg)[1] == ".txt":
+        site = codecs.open(fullName, "w", encoding="utf-8")
+        site.write(header)
         for line in lines[1:]: #Loops through the list to fill out the html
                 if line != "":
                     site.write(line)
                 else:
                     site.write('</p>\n<p>')
 
-        site.write('</p>\n</body>\n</html>') #Finishes the document with a body
+        site.write(footer) #Finishes the document with a body
     elif os.path.splitext(arg)[1] == ".md":
-        file = codecs.open(arg,"r", encoding="utf-8")
-        lines = file.read().splitlines()
-
-        fileName = lines[0]
-        fullName = os.path.join(newDir, fileName + ".html")
         site = codecs.open(fullName, "w",encoding="utf-8")
-        site.write('''<!doctype html>
-<html lang=''' + newlang + '''>
-<head>
-<meta charset="utf-8">
-<title>''' + fileName +'''</title>  
-<meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-<h1> ''' + fileName + ''' </h1>
-<br>
-<br>
-<p>
-''')
+        site.write(header)
         for line in lines[1:]: #Loops through the list to fill out the html
             if line != "":
                     site.write(parseMarkdown(line))
             else:
                     site.write('</p>\n<p>')
 
-        site.write('</p>\n</body>\n</html>') #Finishes the document with a body
+        site.write(footer) #Finishes the document with a body
      
 
 
@@ -134,36 +121,45 @@ def parseMarkdown(md:str):
     elif(len(md.strip()) != 0):
         htmlStr = md
 
+    search = '*'
     # searching for position of *
-    index = md.find('*')
+    index = md.find(search)
     lastIndex = 0
     if index != -1:
-        for char_index in range(index, len(md)):
-            if md[char_index] == '*':
-                lastIndex = char_index
+        lastIndex = searchStr(search, index, md)
     # Adding Italics in markdown
     if index != -1 and lastIndex != 0:
-        md = md[:lastIndex] + "</i>" + md[lastIndex+1:] # Have to do the last position first or else it messes with the first index
-        md = md[:index] + "<i>" + md[index+1:]
+        md = replace("</i>", lastIndex, md)
+        md = replace("<i>", index, md)
         htmlStr = md
 
+    search = '`'
     # searching for position of *
-    index = md.find('`')
+    index = md.find(search)
     lastIndex = 0
     if index != -1:
-        for char_index in range(index, len(md)):
-            if md[char_index] == '`':
-                lastIndex = char_index
+        lastIndex = searchStr(search, index, md)
     # Adding Italics in markdown
     if index != -1 and lastIndex != 0:
-        md = md[:lastIndex] + "</code>" + md[lastIndex+1:] # Have to do the last position first or else it messes with the first index
-        md = md[:index] + "<code>" + md[index+1:]
+        md = replace("</code>", lastIndex, md)
+        md = replace("<code>", index, md)
         htmlStr = md
 
+    htmlStr += " " #adding a space to the end of the line
     return htmlStr
 
-        
+def searchStr(search, index, md:str):
+    # searching for position of search variable
+    lastIndex = 0
+    if index != -1:
+        for char_index in range(index, len(md)):
+            if md[char_index] == search:
+                lastIndex = char_index
+    return lastIndex
 
+def replace(replace:str, index, md:str):
+    md = md[:index] + replace + md[index+1:] # Have to do the last position first or else it messes with the first indexmd
+    return md
 
 def parseDirectory(arg):
 
