@@ -1,15 +1,9 @@
-from ast import parse
-from asyncio.windows_events import NULL
-from distutils import file_util
 import json
 from os.path import exists
 import os
-from pickletools import string1
 import shutil
 import codecs
-import string
-from tkinter.tix import Tree
-from tokenize import String
+import markdown 
 
 def parseInput(arg,lang="en-CA"):
     global newDir #Creates a new Directory for the output
@@ -76,6 +70,8 @@ def parseFile(arg):
 <html lang=''' + newlang + '''>
 <head>
 <meta charset="utf-8">
+<meta name="description" content="P-DR0ZD Static Site Generator ''' + fileName + ''' Page ">
+<meta name="robots" content="noindex, nofollow" />
 <title>''' + fileName + '''</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -98,68 +94,13 @@ def parseFile(arg):
 
         site.write(footer) #Finishes the document with a body
     elif os.path.splitext(arg)[1] == ".md":
-        site = codecs.open(fullName, "w",encoding="utf-8")
+        site = codecs.open(fullName, "w", encoding="utf-8")
         site.write(header)
-        for line in lines[1:]: #Loops through the list to fill out the html
-            if line != "":
-                    site.write(parseMarkdown(line))
-            else:
-                    site.write('</p>\n<p>')
-
+        #Using The markdown parser requiers the list to be in a string format so i used join
+        site.write(markdown.markdown("\n ".join(lines[1:])))
         site.write(footer) #Finishes the document with a body
-     
-
-
     else:
         print(f"Unable to Proccses " + arg + " because its not a text file")
-
-    
-def parseMarkdown(md:str):
-    htmlStr = ""
-    if md.startswith("# "): #implements heading 1 conversion.
-        htmlStr = "<h1>" + md.replace("# ","") + "</h1>"
-    elif(len(md.strip()) != 0):
-        htmlStr = md
-
-    search = '*'
-    # searching for position of *
-    index = md.find(search)
-    lastIndex = 0
-    if index != -1:
-        lastIndex = searchStr(search, index, md)
-    # Adding Italics in markdown
-    if index != -1 and lastIndex != 0:
-        md = replace("</i>", lastIndex, md)
-        md = replace("<i>", index, md)
-        htmlStr = md
-
-    search = '`'
-    # searching for position of *
-    index = md.find(search)
-    lastIndex = 0
-    if index != -1:
-        lastIndex = searchStr(search, index, md)
-    # Adding Italics in markdown
-    if index != -1 and lastIndex != 0:
-        md = replace("</code>", lastIndex, md)
-        md = replace("<code>", index, md)
-        htmlStr = md
-
-    htmlStr += " " #adding a space to the end of the line
-    return htmlStr
-
-def searchStr(search, index, md:str):
-    # searching for position of search variable
-    lastIndex = 0
-    if index != -1:
-        for char_index in range(index, len(md)):
-            if md[char_index] == search:
-                lastIndex = char_index
-    return lastIndex
-
-def replace(replace:str, index, md:str):
-    md = md[:index] + replace + md[index+1:] # Have to do the last position first or else it messes with the first indexmd
-    return md
 
 def parseDirectory(arg):
 
@@ -186,6 +127,8 @@ def createIndex():
 <html lang='''+ newlang +'''>
 <head>
 <meta charset="utf-8">
+<meta name="description" content="P-DR0ZD Static Site Generator Index Please Select the page you want">
+<meta name="robots" content="index, follow" />
 <title> Index </title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>

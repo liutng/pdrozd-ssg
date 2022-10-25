@@ -47,5 +47,9 @@ Config files should be in legal JSON format with a similar format like
 ```
 
  # New features
- * Added markdown language support for # heading 1
  * Added JSON config file support 
+ * Complete Markdown Support with the Help of [Python-Markdown/markdown](https://github.com/Python-Markdown/markdown)
+
+ # Planned Features
+ [] Choosing Output Directory 
+ [] CSS support

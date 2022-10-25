@@ -4,3 +4,5 @@ SSG/utils/__pycache__
 SSG/Sherlock-Holmes-Selected-Stories
 SSG/dist
 config.json
+SSG/markdown/__pycache__
+SSG/markdown/extensions/__pycache__

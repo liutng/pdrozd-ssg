@@ -1,8 +1,4 @@
-from asyncio.windows_events import NULL
-from lib2to3.pgen2.token import EQUAL
-import string
 import sys
-from tokenize import String
 
 from utils.help import *
 from utils.input import parseInput, readConfigFile
@@ -54,7 +50,7 @@ try:
     elif len(inputConfigFile):
         readConfigFile(inputConfigFile)
     elif len(inputPath):
-        parseInput(inputPath,inputLang);
+        parseInput(inputPath,inputLang)
     else:
         raise SystemExit(f"No arguments were passed if unsure about which aurgument are avialable use -h or --help")
 except SystemExit as err:
