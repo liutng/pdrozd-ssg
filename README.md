@@ -51,5 +51,6 @@ Config files should be in legal JSON format with a similar format like
  * Complete Markdown Support with the Help of [Python-Markdown/markdown](https://github.com/Python-Markdown/markdown)
 
  # Planned Features
- [] Choosing Output Directory 
- [] CSS support
+ - [ ] Choosing Output Directory 
+ 
+ - [ ] CSS support
