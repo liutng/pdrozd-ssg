@@ -14,13 +14,6 @@ pdrozd-ssg is a static site generator created in python
 
 Python 3
 
-# How to run
-
-  after installing python 3 run the command use the command
-* `` py .\ssg.py [options] ``
-  
-* example `` py .\ssg.py -i .\Sherlock-Holmes-Selected-Stories\ ``
-
 # Commands
 
 The commands of pdrozd-ssg are
