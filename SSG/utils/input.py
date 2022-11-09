@@ -28,6 +28,7 @@ def parseInput(arg, lang="en-CA"):
         )  # Creates a path for the file or directory
 
         if os.path.isfile(path):  # Checks if file or directory
+            print("")
             parseFile(path)
         elif os.path.isdir(path):
             parseDirectory(path)
@@ -42,33 +43,37 @@ def readConfigFile(arg=""):
     if len(arg) != 0:
         if exists(arg):
             if os.path.isfile(arg):
-                jsonFile = open(arg)
-                if jsonFile.readable():
-                    jsonMap = json.load(jsonFile)
-                    if len(jsonMap) == 0:
-                        raise SystemExit(
-                            "Config file doesn't contain necessary input and output arguments."
-                        )
-                    else:
-                        input = (
-                            jsonMap["input"] if jsonMap.__contains__("input") else ""
-                        )
-                        # Check if argument "input" is included in the config file
-                        lang = jsonMap["lang"] if jsonMap.__contains__("lang") else ""
-                        # Check if argument "lang" is included in the config file.
-                        if len(input) != 0:
-                            parseInput(input, lang)
-                        else:
+                with open(arg) as jsonFile:
+                    if jsonFile.readable():
+                        jsonMap = json.load(jsonFile)
+                        if len(jsonMap) == 0:
                             raise SystemExit(
-                                "Input file is not included in the config file."
+                                "Config file doesn't contain necessary input and output arguments."
                             )
+                        else:
+                            input = (
+                                jsonMap["input"]
+                                if jsonMap.__contains__("input")
+                                else ""
+                            )
+                            # Check if argument "input" is included in the config file
+                            lang = (
+                                jsonMap["lang"] if jsonMap.__contains__("lang") else ""
+                            )
+                            # Check if argument "lang" is included in the config file.
+                            if len(input) != 0:
+                                parseInput(input, lang)
+                            else:
+                                raise SystemExit(
+                                    "Input file is not included in the config file."
+                                )
 
-                else:
-                    raise SystemExit(
-                        "Can't read file "
-                        + arg
-                        + " , please make sure you have the read permission to the file."
-                    )
+                    else:
+                        raise SystemExit(
+                            "Can't read file "
+                            + arg
+                            + " , please make sure you have the read permission to the file."
+                        )
 
             else:
                 raise SystemExit(arg + " is a directory, please provide a config file.")
@@ -82,58 +87,67 @@ def readConfigFile(arg=""):
 
 
 def parseFile(arg):
+    with codecs.open(arg, "r", encoding="utf-8") as file:
+        lines = file.read().splitlines()
 
-    file = codecs.open(arg, "r", encoding="utf-8")
-    lines = file.read().splitlines()
+        try:
+            fileName = lines[0]
+            fullName = os.path.join(newDir, fileName + ".html")
 
-    fileName = lines[0]
-    fullName = os.path.join(newDir, fileName + ".html")
+            header = (
+                """<!doctype html>
+        <html lang="""
+                + newlang
+                + """>
+        <head>
+        <meta charset="utf-8">
+        <meta name="description" content="P-DR0ZD Static Site Generator """
+                + fileName
+                + """ Page ">
+        <meta name="robots" content="noindex, nofollow" />
+        <title>"""
+                + fileName
+                + """</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        </head>
+        <body>
+        <h1>"""
+                + fileName
+                + """</h1>
+        <br>
+        <br>
+        <p>
+        """
+            )
+            footer = "</p>\n</body>\n</html>"
+            if os.path.splitext(arg)[1] == ".txt":
+                with open(fullName, "w", encoding="utf-8") as site:
+                    site.write(header)
+                    for line in lines[
+                        1:
+                    ]:  # Loops through the list to fill out the html
+                        if line != "":
+                            site.write(line)
+                        else:
+                            site.write("</p>\n<p>")
 
-    header = (
-        """<!doctype html>
-<html lang="""
-        + newlang
-        + """>
-<head>
-<meta charset="utf-8">
-<meta name="description" content="P-DR0ZD Static Site Generator """
-        + fileName
-        + """ Page ">
-<meta name="robots" content="noindex, nofollow" />
-<title>"""
-        + fileName
-        + """</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-<h1> """
-        + fileName
-        + """ </h1>
-<br>
-<br>
-<p>
-"""
-    )
-    footer = "</p>\n</body>\n</html>"
-
-    if os.path.splitext(arg)[1] == ".txt":
-        site = codecs.open(fullName, "w", encoding="utf-8")
-        site.write(header)
-        for line in lines[1:]:  # Loops through the list to fill out the html
-            if line != "":
-                site.write(line)
+                    site.write(footer)  # Finishes the document with a body
+                    if not site.closed:
+                        site.close()
+            elif os.path.splitext(arg)[1] == ".md":
+                with codecs.open(fullName, "w", encoding="utf-8") as site:
+                    site.write(header)
+                    # Using The markdown parser requiers the list to be in a string format so i used join
+                    site.write(markdown.markdown("\n ".join(lines[1:])))
+                    site.write(footer)  # Finishes the document with a body
+                    if not site.closed:
+                        site.close()
             else:
-                site.write("</p>\n<p>")
-
-        site.write(footer)  # Finishes the document with a body
-    elif os.path.splitext(arg)[1] == ".md":
-        site = codecs.open(fullName, "w", encoding="utf-8")
-        site.write(header)
-        # Using The markdown parser requiers the list to be in a string format so i used join
-        site.write(markdown.markdown("\n ".join(lines[1:])))
-        site.write(footer)  # Finishes the document with a body
-    else:
-        print("Unable to Proccses " + arg + " because its not a text file")
+                print("Unable to Proccses " + arg + " because its not a text file")
+            if not file.closed:
+                file.close()
+        except IndexError:
+            print("File: " + arg + " is empty")
 
 
 def parseDirectory(arg):
@@ -162,33 +176,34 @@ def createIndex():
     if allFiles:
         fullName = os.path.join(newDir, "index.html")
 
-        index = codecs.open(fullName, "w", encoding="utf-8")
-        index.write(
-            """<!doctype html>
-<html lang="""
-            + newlang
-            + """>
-<head>
-<meta charset="utf-8">
-<meta name="description" content="P-DR0ZD Static Site Generator Index Please Select the page you want">
-<meta name="robots" content="index, follow" />
-<title> Index </title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
-<body>
-<h1> Index </h1>
-<br>
-<br>
-<ol>
-"""
-        )
-        for file in allFiles:  # Loops through the list to fill out the html
-            index.write('<li><a href="' + file + '">' + file + "</a></li>\n")
-
-        index.write(
-            """</ol>
-</body>
-</html>"""
-        )  # Finishes the document with a body
+        with codecs.open(fullName, "w", encoding="utf-8") as index:
+            index.write(
+                """<!doctype html>
+    <html lang="""
+                + newlang
+                + """>
+    <head>
+    <meta charset="utf-8">
+    <meta name="description" content="P-DR0ZD Static Site Generator Index Please Select the page you want">
+    <meta name="robots" content="index, follow" />
+    <title> Index </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    </head>
+    <body>
+    <h1> Index </h1>
+    <br>
+    <br>
+    <ol>
+    """
+            )
+            for file in allFiles:  # Loops through the list to fill out the html
+                index.write('<li><a href="' + file + '">' + file + "</a></li>\n")
+            index.write(
+                """</ol>
+    </body>
+    </html>"""
+            )  # Finishes the document with a body
+            if not index.closed:
+                index.close()
     else:
         raise SystemExit()
