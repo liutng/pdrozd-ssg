@@ -23,12 +23,11 @@ def parseInput(arg, lang="en-CA"):
     elif os.path.isdir(arg):  # added this incase passed argument is absolute path
         parseDirectory(arg)
     else:  # If passed argument is not absolute create an absolute path for it
-        path = (
-            os.path.abspath(os.getcwd()) + "\\" + arg
+        path = os.path.join(
+            os.path.abspath(os.getcwd()), arg
         )  # Creates a path for the file or directory
 
         if os.path.isfile(path):  # Checks if file or directory
-            print("")
             parseFile(path)
         elif os.path.isdir(path):
             parseDirectory(path)
@@ -96,28 +95,28 @@ def parseFile(arg):
 
             header = (
                 """<!doctype html>
-        <html lang="""
+<html lang="""
                 + newlang
                 + """>
-        <head>
-        <meta charset="utf-8">
-        <meta name="description" content="P-DR0ZD Static Site Generator """
+<head>
+<meta charset="utf-8">
+<meta name="description" content="P-DR0ZD Static Site Generator """
                 + fileName
                 + """ Page ">
-        <meta name="robots" content="noindex, nofollow" />
-        <title>"""
+<meta name="robots" content="noindex, nofollow" />
+<title>"""
                 + fileName
                 + """</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        </head>
-        <body>
-        <h1>"""
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<h1>"""
                 + fileName
                 + """</h1>
-        <br>
-        <br>
-        <p>
-        """
+<br>
+<br>
+<p>
+"""
             )
             footer = "</p>\n</body>\n</html>"
             if os.path.splitext(arg)[1] == ".txt":
@@ -179,29 +178,29 @@ def createIndex():
         with codecs.open(fullName, "w", encoding="utf-8") as index:
             index.write(
                 """<!doctype html>
-    <html lang="""
+<html lang="""
                 + newlang
                 + """>
-    <head>
-    <meta charset="utf-8">
-    <meta name="description" content="P-DR0ZD Static Site Generator Index Please Select the page you want">
-    <meta name="robots" content="index, follow" />
-    <title> Index </title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
-    <body>
-    <h1> Index </h1>
-    <br>
-    <br>
-    <ol>
-    """
+<head>
+<meta charset="utf-8">
+<meta name="description" content="P-DR0ZD Static Site Generator Index Please Select the page you want">
+<meta name="robots" content="index, follow" />
+<title> Index </title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<h1> Index </h1>
+<br>
+<br>
+<ol>
+"""
             )
             for file in allFiles:  # Loops through the list to fill out the html
                 index.write('<li><a href="' + file + '">' + file + "</a></li>\n")
             index.write(
                 """</ol>
-    </body>
-    </html>"""
+</body>
+</html>"""
             )  # Finishes the document with a body
             if not index.closed:
                 index.close()
