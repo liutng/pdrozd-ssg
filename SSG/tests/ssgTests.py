@@ -34,9 +34,22 @@ class SSGTest(unittest.TestCase):
                     succsess = True
                     break
 
+    # Tests Parse Input for body text
+    def test_parseInputMarkdown_Body(self):
+        arg = os.path.join(os.path.abspath(os.getcwd()), "testFiles", "test2.md")
+        parseInput(arg)
+        site = os.path.join(os.path.abspath(os.getcwd()), "dist", "Test Title.html")
+
+        succsess = False
+        with open(site, "r", encoding="utf-8") as file:
+            lines = file.read().splitlines()
+
+            for line in lines:
+                if line.find("<em>Body</em>"):
+                    succsess = True
+                    break
+
         self.assertTrue(succsess)
-        newDir = os.path.join(os.path.abspath(os.getcwd()), "dist")
-        shutil.rmtree(newDir)
 
     def tearDown(self):
         warnings.simplefilter("default", ResourceWarning)
