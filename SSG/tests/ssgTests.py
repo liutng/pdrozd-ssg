@@ -45,7 +45,7 @@ class SSGTest(unittest.TestCase):
             lines = file.read().splitlines()
 
             for line in lines:
-                if line.find("<em>Body</em>"):
+                if not line.find("<em>Body</em>"):
                     succsess = True
                     break
 
