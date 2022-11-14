@@ -27,4 +27,4 @@ jobs:
     - name: Test with unittest
       run: |
         #Runs the test
-        py .\SSG\tests\ssgTests.py
+        python .\SSG\tests\ssgTests.py
